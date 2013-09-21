@@ -1,0 +1,25 @@
+{
+    "name": "ceejayoz/laravel-phumbor",
+    "description": "",
+	"keywords": ["laravel", "phumbor", "thumbor"],
+    "authors": [
+        {
+            "name": "Chris Sternal-Johnson",
+            "email": "chris@gripmedia.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x",
+		"99designs/phumbor": "dev-master"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Ceejayoz\\LaravelPhumbor": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

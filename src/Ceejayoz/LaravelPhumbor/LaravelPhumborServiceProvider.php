@@ -1,6 +1,5 @@
 <?php namespace Ceejayoz\LaravelPhumbor;
 
-use Config;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelPhumborServiceProvider extends ServiceProvider {
@@ -19,7 +18,9 @@ class LaravelPhumborServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('ceejayoz/laravel-phumbor');
+		$this->publishes([
+			__DIR__.'/../../config/config.php' => $this->getConfigPath(),
+		]);
 	}
 
 	/**
@@ -29,8 +30,15 @@ class LaravelPhumborServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		if ($this->isLumen()) {
+			$this->app->configure('laravel-phumbor');
+		}
+
 		$this->app['phumbor'] = $this->app->share(function($app) {
-			return \Thumbor\Url\BuilderFactory::construct(Config::get('laravel-phumbor::server'), Config::get('laravel-phumbor::key'));
+			$configPath = __DIR__ . '/../../config/config.php';
+			$this->mergeConfigFrom($configPath, 'laravel-phumbor');
+
+			return \Thumbor\Url\BuilderFactory::construct(config('laravel-phumbor.server'), config('laravel-phumbor.key'));
 		});
 	}
 
@@ -44,4 +52,17 @@ class LaravelPhumborServiceProvider extends ServiceProvider {
 		return array();
 	}
 
+	private function isLumen()
+	{
+		return str_contains($this->app->version(), 'Lumen');
+	}
+
+	private function getConfigPath()
+	{
+		if ($this->isLumen()) {
+			return base_path('config/laravel-phumbor.php');
+		} else {
+			return config_path('laravel-phumbor.php');
+		}
+	}
 }

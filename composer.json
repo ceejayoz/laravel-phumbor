@@ -12,8 +12,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.*",
-        "99designs/phumbor": "dev-master"
+        "illuminate/support": "5.*",
+        "99designs/phumbor": "^1.2"
     },
     "autoload": {
         "classmap": [
